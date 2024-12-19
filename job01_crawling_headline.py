@@ -42,7 +42,7 @@ df_titles.info()
 print(df_titles['category'].value_counts())
 #수집된 데이터 확인.
 
-df_titles.to_csv('./crawling_data/naver_headline_news_{}.csv'.format(
+df_titles.to_csv('./crawling_data/naver_headline_news_2_3_{}.csv'.format(
     datetime.datetime.now().strftime('%Y%m%d')), index=False)
 #CSV 파일 저장
 
