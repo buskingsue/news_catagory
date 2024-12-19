@@ -17,7 +17,7 @@ url = 'https://news.naver.com/section/100'
 #수집된 모든 데이터를 저장할 빈 데이터프레임 생성.
 df_titles = pd.DataFrame ()
 
-for i in range(6): #0부터 5까지 6개
+for i in range(4, 6): #5부터 6까지 2개
     url = 'https://news.naver.com/section/10{}'.format(i)
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text,'html.parser')
