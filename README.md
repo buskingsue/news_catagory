@@ -1,9 +1,9 @@
 # news_catagory
 뉴스 주제 분류
 # crawling_data 폴더
-## naver_headline_news_0_1_20241219.csv
-## naver_headline_news_2_3_20241219.csv
-## naver_headline_news_4_5_20241219.csv
+## naver_headline_news_0_1_20241219.csv 팀장 강동수
+## naver_headline_news_2_3_20241219.csv 팀원 윤승권
+## naver_headline_news_4_5_20241219.csv 팀원 이효원
 ##
 # crawling_data2 폴더
 ## naver_news_titles_20241219_0_1.csv
