@@ -76,5 +76,16 @@ token = Tokenizer()
 token.fit_on_texts(X)
 tokened_X = token.texts_to_sequences(X)
 wordsize = len(token.word_index) + 1
-
+print(wordsize)
 print(tokened_X[:5])
+print('\n')
+#최대값 찾기 알고리즘
+max = 0
+for i in range(len(tokened_X)):
+    if max < len(tokened_X[i]):
+        max = len(tokened_X[i])
+print('max값: ', max)
+print('\n')
+
+X_pad = pad_sequences(tokened_X, max)
+print(X_pad)
