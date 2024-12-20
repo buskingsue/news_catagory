@@ -19,6 +19,7 @@ print(df.info())
 print('\n')
 print(df.category.value_counts())
 print('\n')
+df = df.reset_index(drop=True)  # 인덱스를 재설정
 
 X = df['title']
 Y = df['category']
@@ -35,10 +36,10 @@ okt.morphs(X[0]) : okt 객체의 morphs 메서드는 주어진 텍스트 X[0]을
 '''
 print('okt_x :', okt_x)
 
-kkma = Kkma()
-kkma_x = kkma.morphs(X[0])
-print('kkma :', kkma_x)
-exit()
+# kkma = Kkma()
+# kkma_x = kkma.morphs(X[0])
+# print('kkma :', kkma_x)
+# exit()
 
 encoder = LabelEncoder()
 labeled_y = encoder.fit_transform(Y)
@@ -51,3 +52,7 @@ with open('./models/encoder.pickle', 'wb') as f:
 
 onehot_Y = to_categorical(labeled_y)
 print(onehot_Y)
+
+for i in range(len(X)):
+    X[i] = okt.morphs(X[i], stem=True)
+print(X)
