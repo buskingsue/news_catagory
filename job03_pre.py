@@ -7,7 +7,8 @@ from tensorflow.keras.utils import to_categorical
 from konlpy.tag import Okt, Kkma
 #open korea tokenizer
 import jpype
-
+from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
 
 
 
@@ -70,3 +71,10 @@ for sentence in range(len(X)):
     X[sentence] = ' '.join(words)
 
 print(X[:5])
+
+token = Tokenizer()
+token.fit_on_texts(X)
+tokened_X = token.texts_to_sequences(X)
+wordsize = len(token.word_index) + 1
+
+print(tokened_X[:5])
