@@ -76,8 +76,13 @@ token = Tokenizer()
 token.fit_on_texts(X)
 tokened_X = token.texts_to_sequences(X)
 wordsize = len(token.word_index) + 1
-print(wordsize)
-print(tokened_X[:5])
+print('\nwordsize :', wordsize)
+print('\n')
+
+print('tokened_X[:5]',tokened_X[:5])
+#이 코드는 tokened_X라는 변수의 처음 5개의 요소를 출력하는 역할을 합니다.
+
+
 print('\n')
 #최대값 찾기 알고리즘
 max = 0
@@ -89,3 +94,13 @@ print('\n')
 
 X_pad = pad_sequences(tokened_X, max)
 print(X_pad)
+print(len(X_pad[0]))
+
+X_train, X_test, Y_train, Y_test = train_test_split( X_pad, onehot_Y, test_size=0.1)
+print(X_train.shape, Y_train.shape)
+print(X_test.shape, Y_test.shape)
+
+np.save('./crawling_data/news_data_X_train_max_{}_wordsize {}'.format( max, wordsize), X_train)
+np.save('./crawling_data/news_data_Y_train_max_{}_wordsize {}'.format( max, wordsize), Y_train)
+np.save('./crawling_data/news_data_X_test_max_{}_wordsize_{}'.format( max, wordsize), X_test)
+np.save('./crawling_data/news_data_Y_test_max_{}_wordsize {}'.format( max, wordsize), Y_test)
