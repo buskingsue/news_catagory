@@ -11,7 +11,7 @@ import jpype
 
 
 
-df = pd.read_csv('D:/2024_12_20/crawling_data_2/naver_news_titles_20241220_1116.csv')
+df = pd.read_csv('D:/2024_12_20/crawling_data_2/naver_news_titles_20241220_1401.csv')
 df.drop_duplicates(inplace=True)
 print(df.head())
 print('\n')
@@ -56,3 +56,17 @@ print(onehot_Y)
 for i in range(len(X)):
     X[i] = okt.morphs(X[i], stem=True)
 print(X)
+#불용어 : 학습이 도움이 안되는 쓸모없는 문자 대명사 감탄사..
+stopwords = pd.read_csv('./crawling_data_2/stopwords.csv', index_col=0)
+print(stopwords)
+
+
+for sentence in range(len(X)):
+    words = []
+    for word in range(len(X[sentence])):
+        if len(X[sentence][word]) > 1:
+           if X[sentence][word] not in list(stopwords['stopword']):
+               words.append(X[sentence][word])
+    X[sentence] = ' '.join(words)
+
+print(X[:5])
