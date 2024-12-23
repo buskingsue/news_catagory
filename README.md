@@ -24,4 +24,13 @@
 ## conda create -n myenv python=3.9
 ## conda activate myenv
 ## conda install --file requirements.txt
+##
+# git 메인 브랜치 파일을 develop 브랜치로 복사
+## git checkout develop
+## git checkout main -- .
+## git add .
+## git commit -m "Copy files from main to develop"
+## git remote add develop 주소
+## git push develop develop
+
 
