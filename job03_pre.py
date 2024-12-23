@@ -79,8 +79,8 @@ wordsize = len(token.word_index) + 1
 print('\nwordsize :', wordsize)
 print('\n')
 
-print('tokened_X[:5]',tokened_X[:5])
-#이 코드는 tokened_X라는 변수의 처음 5개의 요소를 출력하는 역할을 합니다.
+print(tokened_X[:5])
+print('이 코드는 tokened_X라는 변수의 처음 5개의 요소를 출력하는 역할을 합니다.\n')
 
 
 print('\n')
