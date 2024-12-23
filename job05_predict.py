@@ -84,9 +84,19 @@ preds = model.predict(X_pad)
 predicts = []
 for pred in preds:
     most = label[np.argmax(pred)]
-    predicts.append(most)
+    pred[np.argmax(pred)] = 0 # 제일 큰 값이 0이 되었음
+    second =label[np.argmax(pred)]
+    predicts.append([most, second]) #리스트로 저장
+
 df['predict'] = predicts
 
+# 예측 결과 출력
 print(df.head(30))
+score = model.evaluate(X_pad, onehot_Y)
+print(score[1])
 
-
+df['OX'] =0
+for i in range(len(df)):
+    if df.loc[i, 'category' ] == df.loc[i, 'predict']:
+        df.loc[i, 'OX'] = 1
+print(df.OX.mean())
