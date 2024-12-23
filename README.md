@@ -10,7 +10,7 @@
 ## naver_news_titles_20241219_2_3.csv
 ## naver_news_titles_20241219_4_5.csv
 ##
-# pip freeze > requirement.txt
+# pip freeze > requirements.txt
 ## 환경 설치 파일 텍스트 파일로 저장
 ##
 # 콘다 환경 설치시

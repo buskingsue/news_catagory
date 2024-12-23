@@ -22,81 +22,85 @@ driver = webdriver.Chrome(service=service, options=options)
 
 # 데이터 저장 디렉토리 생성
 if not os.path.exists('./crawling_data_2'):
-   os.makedirs('./crawling_data_2')
+    os.makedirs('./crawling_data_2')
 
 # 뉴스 카테고리별 URL과 XPath 설정
 categories = {
-   '100': {'name': 'Politics', 'xpath_type': 'normal'},
-   '101': {'name': 'Economic', 'xpath_type': 'economic'},
-   '102': {'name': 'Social', 'xpath_type': 'normal'},
-   '103': {'name': 'Culture', 'xpath_type': 'normal'},
-   '104': {'name': 'World', 'xpath_type': 'normal'},
-   '105': {'name': 'IT', 'xpath_type': 'normal'}
+    '100': {'name': 'Politics', 'xpath_type': 'normal'},
+    '101': {'name': 'Economic', 'xpath_type': 'economic'},
+    '102': {'name': 'Social', 'xpath_type': 'normal'},
+    '103': {'name': 'Culture', 'xpath_type': 'normal'},
+    '104': {'name': 'World', 'xpath_type': 'normal'},
+    '105': {'name': 'IT', 'xpath_type': 'normal'}
 }
 
 df_titles = pd.DataFrame(columns=['title', 'category'])
 
 # 각 카테고리별로 크롤링
 for cat_num, cat_info in categories.items():
-   cat_name = cat_info['name']
-   xpath_type = cat_info['xpath_type']
+    cat_name = cat_info['name']
+    xpath_type = cat_info['xpath_type']
 
-   # URL 접속
-   url = f'https://news.naver.com/section/{cat_num}'
-   driver.get(url)
-   time.sleep(1)
+    # URL 접속
+    url = f'https://news.naver.com/section/{cat_num}'
+    driver.get(url)
+    time.sleep(1)
 
-   # 더보기 버튼 클릭
-   button_xpath = '//*[@id="newsct"]/div[4]/div/div[2]'
-   for _ in range(15):
-       try:
-           time.sleep(0.5)
-           driver.find_element(By.XPATH, button_xpath).click()
-       except:
-           print(f"{cat_name} 카테고리 더보기 {_}번째 클릭 실패")
-           break
+    # 더보기 버튼 클릭
+    if xpath_type == 'economic':
+        button_xpath = '//*[@id="newsct"]/div[5]/div/div[2]/a'  # 경제 카테고리용 버튼 XPath
+    else:
+        button_xpath = '//*[@id="newsct"]/div[4]/div/div[2]/a'  # 다른 카테고리용 버튼 XPath
 
-   # 뉴스 제목 수집
-   titles = []
-   if xpath_type == 'economic':
-       # 경제 뉴스용 XPath
-       for i in range(1, 98):
-           for j in range(1, 7):
-               try:
-                   title_xpath = f'//*[@id="newsct"]/div[2]/div/div[2]/ul/li[{j}]/div[2]/a'
-                   title = driver.find_element(By.XPATH, title_xpath).text
-                   # 한글과 공백만 남기고 제거
-                   title = re.compile('[^가-힣 ]').sub(' ', title)
-                   titles.append({
-                       'title': title,
-                       'category': cat_name
-                   })
-                   print(f'[{cat_name}] {title}')
-               except:
-                   continue
-   else:
-       # 다른 카테고리용 XPath
-       for i in range(1, 98):
-           for j in range(1, 7):
-               try:
-                   title_xpath = f'//*[@id="newsct"]/div[4]/div/div[1]/div[{i}]/ul/li[{j}]/div/div/div[2]/a/strong'
-                   title = driver.find_element(By.XPATH, title_xpath).text
-                   # 한글과 공백만 남기고 제거
-                   title = re.compile('[^가-힣 ]').sub(' ', title)
-                   titles.append({
-                       'title': title,
-                       'category': cat_name
-                   })
-                   print(f'[{cat_name}] {title}')
-               except:
-                   continue
+    for _ in range(15):
+        try:
+            time.sleep(0.5)
+            driver.find_element(By.XPATH, button_xpath).click()
+        except:
+            print(f"{cat_name} 카테고리 더보기 {_}번째 클릭 실패")
+            break
 
-   # 카테고리별 결과를 데이터프레임에 추가
-   df_section = pd.DataFrame(titles)
-   df_titles = pd.concat([df_titles, df_section], ignore_index=True)
+    # 뉴스 제목 수집
+    titles = []
+    if xpath_type == 'economic':
+        # 경제 뉴스용 XPath
+        for i in range(1, 98):
+            for j in range(1, 7):
+                try:
+                    title_xpath = f'//*[@id="newsct"]/div[5]/div/div[1]/div[{i}]/ul/li[{j}]/div/div/div[2]/a/strong'
+                    title = driver.find_element(By.XPATH, title_xpath).text
+                    # 한글과 공백만 남기고 제거
+                    title = re.compile('[^가-힣 ]').sub(' ', title)
+                    titles.append({
+                        'title': title,
+                        'category': cat_name
+                    })
+                    print(f'[{cat_name}] {title}')
+                except:
+                    continue
+    else:
+        # 다른 카테고리용 XPath
+        for i in range(1, 98):
+            for j in range(1, 7):
+                try:
+                    title_xpath = f'//*[@id="newsct"]/div[4]/div/div[1]/div[{i}]/ul/li[{j}]/div/div/div[2]/a/strong'
+                    title = driver.find_element(By.XPATH, title_xpath).text
+                    # 한글과 공백만 남기고 제거
+                    title = re.compile('[^가-힣 ]').sub(' ', title)
+                    titles.append({
+                        'title': title,
+                        'category': cat_name
+                    })
+                    print(f'[{cat_name}] {title}')
+                except:
+                    continue
 
-   print(f'\n{cat_name} 카테고리 {len(titles)}개 기사 수집 완료\n')
-   time.sleep(2)
+    # 카테고리별 결과를 데이터프레임에 추가
+    df_section = pd.DataFrame(titles)
+    df_titles = pd.concat([df_titles, df_section], ignore_index=True)
+
+    print(f'\n{cat_name} 카테고리 {len(titles)}개 기사 수집 완료\n')
+    time.sleep(2)
 
 # 결과 확인 및 저장
 print('\n전체 결과:')
